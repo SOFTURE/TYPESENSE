@@ -4,5 +4,5 @@ namespace SOFTURE.Typesense.Playground;
 
 internal sealed class PlaygroundSettings : ITypesenseSettings
 {
-    public TypesenseSettings Typesense { get; init; }
+    public required TypesenseSettings Typesense { get; init; }
 }

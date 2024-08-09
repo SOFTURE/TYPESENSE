@@ -10,7 +10,7 @@ public class ExampleConfig : ICollectionConfiguration
     public ExampleConfig()
     {
         Collection.Create("example")
-            .Bind(collection => CollectionConfiguration.Create(
+            .Bind(collection => CollectionConfiguration.Create<ExampleDocument>(
                 collection: collection,
                 fields: new List<Field>
                 {
@@ -20,7 +20,7 @@ public class ExampleConfig : ICollectionConfiguration
                 defaultSortingField: "name"
             ))
             .Tap(configuration => Configurations.Add(configuration))
-            .TapError(error => throw new Exception(error));
+            .TapError(error => Console.WriteLine($"[TYPESENSE][ERROR] {error}"));
     }
     
     public List<CollectionConfiguration> Configurations { get; } = [];

@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using SOFTURE.Typesense.Models;
 using Typesense;
 
 namespace SOFTURE.Typesense.ValueObjects;
@@ -19,23 +20,26 @@ public sealed class CollectionConfiguration : ValueObject
     private IReadOnlyList<Field> Fields { get; }
     private Field? DefaultSortingField { get; }
 
-    public static Result<CollectionConfiguration> Create(
+    public static Result<CollectionConfiguration> Create<TDocument>(
         Collection collection,
         IReadOnlyList<Field> fields,
         string? defaultSortingField)
+        where TDocument : DocumentBase
     {
+        var validationResult = ValidateDocumentStructure<TDocument>(fields);
+        if (validationResult.IsFailure)
+            return Result.Failure<CollectionConfiguration>(validationResult.Error);
+
         if (string.IsNullOrEmpty(defaultSortingField))
             return new CollectionConfiguration(collection, fields);
 
         var defaultField = fields.SingleOrDefault(f => f.Name == defaultSortingField);
-
         return defaultField == null
-            ? Result.Failure<CollectionConfiguration>($"Default sorting field '{defaultSortingField}' " +
-                                                      "not found in fields.")
+            ? Result.Failure<CollectionConfiguration>($"Sorting field '{defaultSortingField}' not found in fields.")
             : new CollectionConfiguration(collection, fields, defaultField);
     }
 
-    public Schema GetSchema()
+    internal Schema GetSchema()
     {
         if (DefaultSortingField == null)
         {
@@ -48,7 +52,7 @@ public sealed class CollectionConfiguration : ValueObject
             defaultSortingField: DefaultSortingField.Name);
     }
 
-    public bool ISchemaModified(IReadOnlyCollection<Field>? existingFields)
+    internal bool ISchemaModified(IReadOnlyCollection<Field>? existingFields)
     {
         if (existingFields == null || existingFields.Count != Fields.Count) return true;
 
@@ -66,6 +70,23 @@ public sealed class CollectionConfiguration : ValueObject
             .ToList();
 
         return changedFields.Count != 0;
+    }
+
+    private static Result ValidateDocumentStructure<TDocument>(IReadOnlyList<Field> fields)
+        where TDocument : DocumentBase
+    {
+        var documentProperties = typeof(TDocument)
+            .GetProperties()
+            .Where(p => p.Name != "Collection" && p.Name != "Id")
+            .Select(x => x.Name.ToLower());
+
+        var fieldNames = fields.Select(f => f.Name.ToLower());
+
+        var missingProperties = fieldNames.Except(documentProperties).ToList();
+
+        return missingProperties.Count != 0
+            ? Result.Failure($"Missing properties: '{string.Join(",", missingProperties)}' in document model: '{typeof(TDocument).Name}'.")
+            : Result.Success();
     }
 
     protected override IEnumerable<IComparable> GetEqualityComponents()

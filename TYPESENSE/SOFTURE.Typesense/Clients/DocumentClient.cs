@@ -56,7 +56,7 @@ public class DocumentClient(ITypesenseClient client) : IDocumentClient
         {
             await client.UpdateDocument(document.Collection, document.Id, document);
         }
-        catch (TypesenseApiNotFoundException e)
+        catch (TypesenseApiNotFoundException)
         {
             await client.CreateDocument(document.Collection, document);
         }
