@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.2"/>
-        <PackageReference Include="SOFTURE.Results" Version="0.0.7"/>
-        <PackageReference Include="SOFTURE.Settings" Version="0.0.7"/>
+        <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.3" />
+        <PackageReference Include="SOFTURE.Results" Version="0.0.8"/>
+        <PackageReference Include="SOFTURE.Settings" Version="0.0.8"/>
         <PackageReference Include="Typesense" Version="7.12.0"/>
     </ItemGroup>
 
