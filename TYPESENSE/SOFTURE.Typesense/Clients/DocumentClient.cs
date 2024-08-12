@@ -7,18 +7,23 @@ namespace SOFTURE.Typesense.Clients;
 
 public class DocumentClient(ITypesenseClient client) : IDocumentClient
 {
-    public async Task<Result<List<TDocument>>> Search<TDocument, TQuery>(
+    public async Task<Result<List<TDocument>>> Search<TDocument, TQuery, TFilters>(
         TQuery query,
+        TFilters? filters = null,
         bool typoTolerance = true,
         int records = 10)
         where TDocument : DocumentBase
         where TQuery : QueryBase
+        where TFilters : FilterBase
     {
-        if (!query.CanSearch()) return new List<TDocument>();
+        var text = query.Text();
+        var queryBy = query.QueryBy();
+        var filterBy = filters?.FilterBy();
 
-        var searchParameters = new SearchParameters(query.Text(), query.QueryBy())
+        var searchParameters = new SearchParameters(text, queryBy)
         {
             PerPage = records,
+            FilterBy = filterBy,
             NumberOfTypos = typoTolerance ? 2 : 0
         };
 

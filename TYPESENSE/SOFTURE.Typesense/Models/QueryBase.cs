@@ -1,27 +1,10 @@
-﻿using System.Reflection;
-using SOFTURE.Typesense.ValueObjects;
+﻿using SOFTURE.Typesense.ValueObjects;
 
 namespace SOFTURE.Typesense.Models;
 
-public abstract class QueryBase(Collection collection)
+public abstract class QueryBase(Collection collection) : SearchBase(collection)
 {
-    public Collection Collection => collection;
-
-    public bool CanSearch()
-    {
-        foreach (var property in GetProperties())
-        {
-            var value = property.GetValue(this);
-            if (value != null && !string.IsNullOrEmpty(value.ToString()))
-            {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
-    public string Text()
+    internal string Text()
     {
         var values = new List<string>();
 
@@ -33,11 +16,13 @@ public abstract class QueryBase(Collection collection)
                 values.Add(value.ToString()!);
             }
         }
-
-        return string.Join(", ", values);
+        
+        return values.Count == 0 
+            ? "*" 
+            : string.Join(", ", values);
     }
 
-    public string QueryBy()
+    internal string QueryBy()
     {
         var values = new List<string>();
 
@@ -50,11 +35,8 @@ public abstract class QueryBase(Collection collection)
             }
         }
 
-        return string.Join(", ", values);
-    }
-    
-    private List<PropertyInfo> GetProperties()
-    {
-        return GetType().GetProperties().Where(x => x.Name != "Collection").ToList();
+        return values.Count == 0 
+            ? "" 
+            : string.Join(", ", values);
     }
 }

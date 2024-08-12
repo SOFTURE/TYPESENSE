@@ -1,27 +1,27 @@
-using CSharpFunctionalExtensions;
 using SOFTURE.Typesense.Abstractions;
+using SOFTURE.Typesense.Extensions;
 using SOFTURE.Typesense.ValueObjects;
 using Typesense;
 
 namespace SOFTURE.Typesense.Playground.Examples;
 
-public class ExampleConfig : ICollectionConfiguration
+public sealed class ExampleConfig : ICollectionConfiguration
 {
     public ExampleConfig()
     {
-        Collection.Create("example")
-            .Bind(collection => CollectionConfiguration.Create<ExampleDocument>(
-                collection: collection,
-                fields: new List<Field>
-                {
-                    new("name", FieldType.String, facet: false, index: true, optional: false, sort: true),
-                    new("city", FieldType.String)
-                },
-                defaultSortingField: "name"
-            ))
-            .Tap(configuration => Configurations.Add(configuration))
-            .TapError(error => Console.WriteLine($"[TYPESENSE][ERROR] {error}"));
+        // FACET - Fields with 'true' can be filtered & grouped - for example voivodeship, city, category, brand etc.
+
+        Configurations.ConfigureCollection<ExampleDocument, ExampleQuery, ExampleFilters>(
+            collectionName: "example",
+            fields:
+            [
+                new Field("name", FieldType.String, facet: false, index: true, optional: false, sort: true),
+                new Field("identifier", FieldType.String, facet: false),
+                new Field("city", FieldType.String, facet: true)
+            ],
+            defaultSortingField: "name"
+        );
     }
-    
+
     public List<CollectionConfiguration> Configurations { get; } = [];
 }

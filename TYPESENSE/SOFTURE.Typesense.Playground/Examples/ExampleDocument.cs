@@ -2,7 +2,7 @@
 
 namespace SOFTURE.Typesense.Playground.Examples;
 
-public class ExampleDocument() : DocumentBase(collection: "example")
+public sealed class ExampleDocument() : DocumentBase(collection: "example")
 {
     public override required string Id { get; set; }
 
