@@ -7,6 +7,7 @@ public interface IDocumentClient
 {
     Task<Result<List<TDocument>>> Search<TDocument, TQuery, TFilters>(
         TQuery query,
+        int page = 1,
         TFilters? filters = null,
         bool typoTolerance = true,
         int records = 10)

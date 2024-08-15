@@ -9,6 +9,7 @@ public class DocumentClient(ITypesenseClient client) : IDocumentClient
 {
     public async Task<Result<List<TDocument>>> Search<TDocument, TQuery, TFilters>(
         TQuery query,
+        int page = 1,
         TFilters? filters = null,
         bool typoTolerance = true,
         int records = 10)
@@ -22,6 +23,7 @@ public class DocumentClient(ITypesenseClient client) : IDocumentClient
 
         var searchParameters = new SearchParameters(text, queryBy)
         {
+            Page = page,
             PerPage = records,
             FilterBy = filterBy,
             NumberOfTypos = typoTolerance ? 2 : 0
