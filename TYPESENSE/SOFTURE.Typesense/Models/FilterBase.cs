@@ -20,6 +20,6 @@ public abstract class FilterBase(Collection collection) : SearchBase(collection)
                 return string.Empty;
             });
         
-        return string.Join(", ", filterBy);
+        return string.Join(" && ", filterBy);
     }
 }
