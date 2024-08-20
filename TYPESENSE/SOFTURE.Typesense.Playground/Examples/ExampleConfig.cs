@@ -16,7 +16,7 @@ public sealed class ExampleConfig : ICollectionConfiguration
             fields:
             [
                 new Field("name", FieldType.String, facet: false, index: true, optional: false, sort: true),
-                new Field("identifier", FieldType.String, facet: false),
+                new Field("identifier", FieldType.String, facet: true),
                 new Field("city", FieldType.String, facet: true)
             ],
             defaultSortingField: "name"

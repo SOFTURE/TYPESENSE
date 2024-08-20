@@ -6,19 +6,19 @@ public abstract class FilterBase(Collection collection) : SearchBase(collection)
 {
     internal string FilterBy()
     {
-        var filterBy = GetProperties()
-            .Select(property =>
-            {
-                var value = property.GetValue(this);
-                var name = property.Name.ToLower();
+        
+        var filterBy = new List<string>();
+        
+        foreach (var property in GetProperties())
+        {
+            var value = property.GetValue(this);
+            var name = property.Name.ToLower();
 
-                if (value != null && !string.IsNullOrEmpty(value.ToString()))
-                {
-                    return $"{name}: {value}";
-                }
-                
-                return string.Empty;
-            });
+            if (value != null && !string.IsNullOrEmpty(value.ToString()))
+            {
+                filterBy.Add($"{name}: {value}");
+            }
+        }
         
         return string.Join(" && ", filterBy);
     }

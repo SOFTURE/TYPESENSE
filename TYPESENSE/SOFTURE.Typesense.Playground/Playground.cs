@@ -9,14 +9,15 @@ public sealed class Playground(IDocumentClient documentClient)
 {
     public async Task Run()
     {
-        var exampleCites = new[] { "Warsaw", "Cracow", "Gdansk", "Wroclaw", "Poznan", "Lodz", "Katowice" };
+        var exampleCites = new[] { "Warsaw", "Wroclaw" };
+        var exampleIdentifiers = new[] { "AB", "CD" };
 
         var currentId = 1;
         var exampleDocuments = new Faker<ExampleDocument>()
             .StrictMode(true)
             .RuleFor(o => o.Id, _ => (currentId++).ToString())
             .RuleFor(o => o.Name, f => f.Name.FullName())
-            .RuleFor(o => o.Identifier, f => f.Random.String2(2))
+            .RuleFor(o => o.Identifier, f => f.PickRandom(exampleIdentifiers))
             .RuleFor(o => o.City, f => f.PickRandom(exampleCites))
             .Generate(50);
 
@@ -30,12 +31,13 @@ public sealed class Playground(IDocumentClient documentClient)
 
         var exampleQuery = new ExampleQuery
         {
-            Name = "Kate"
+            Name = "J"
         };
 
         var exampleFilters = new ExampleFilters
         {
-            City = "Wroclaw"
+            City = "Wroclaw",
+            Identifier = "AB"
         };
 
         await documentClient.Search<ExampleDocument, ExampleQuery, ExampleFilters>(
