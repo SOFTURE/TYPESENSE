@@ -5,7 +5,7 @@ namespace SOFTURE.Typesense.Abstractions;
 
 public interface IDocumentClient
 {
-    Task<Result<List<TDocument>>> Search<TDocument, TQuery, TFilters>(
+    Task<Result<SearchItems<TDocument>>> Search<TDocument, TQuery, TFilters>(
         TQuery query,
         int page = 1,
         TFilters? filters = null,

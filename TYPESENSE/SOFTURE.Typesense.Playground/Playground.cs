@@ -47,7 +47,8 @@ public sealed class Playground(IDocumentClient documentClient)
             )
             .Tap(result =>
             {
-                foreach (var document in result)
+                Console.WriteLine($"Search result: {result}");
+                foreach (var document in result.Items)
                 {
                     Console.WriteLine($"Document found: {document}");
                 }

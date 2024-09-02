@@ -7,7 +7,7 @@ namespace SOFTURE.Typesense.Clients;
 
 public class DocumentClient(ITypesenseClient client) : IDocumentClient
 {
-    public async Task<Result<List<TDocument>>> Search<TDocument, TQuery, TFilters>(
+    public async Task<Result<SearchItems<TDocument>>> Search<TDocument, TQuery, TFilters>(
         TQuery query,
         int page = 1,
         TFilters? filters = null,
@@ -32,12 +32,18 @@ public class DocumentClient(ITypesenseClient client) : IDocumentClient
         try
         {
             var searchResult = await client.Search<TDocument>(query.Collection, searchParameters);
-
-            return searchResult.Hits.Select(x => x.Document).ToList();
+            var items = searchResult.Hits.Select(x => x.Document).ToList();
+            
+            return SearchItems<TDocument>.Create(
+                items,
+                searchResult.Found,
+                searchResult.OutOf,
+                searchResult.Page
+            );
         }
         catch (Exception e)
         {
-            return Result.Failure<List<TDocument>>(e.Message);
+            return Result.Failure<SearchItems<TDocument>>(e.Message);
         }
     }
 
