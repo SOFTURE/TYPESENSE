@@ -20,4 +20,10 @@ public interface IDocumentClient
 
     Task<Result> UpsertDocument<TDocument>(TDocument document)
         where TDocument : DocumentBase;
+    
+    Task<Result> DeleteDocument<TDocument>(TDocument document)
+        where TDocument : DocumentBase;
+    
+    Task<Result> ImportDocuments<TDocument>(List<TDocument> documents, int batchSize = 40)
+        where TDocument : DocumentBase;
 }

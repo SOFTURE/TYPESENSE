@@ -9,6 +9,8 @@ public sealed class Playground(IDocumentClient documentClient)
 {
     public async Task Run()
     {
+        const int recordsCount = 50;
+        
         var exampleCites = new[] { "Warsaw", "Wroclaw" };
         var exampleIdentifiers = new[] { "AB", "CD" };
 
@@ -19,25 +21,24 @@ public sealed class Playground(IDocumentClient documentClient)
             .RuleFor(o => o.Name, f => f.Name.FullName())
             .RuleFor(o => o.Identifier, f => f.PickRandom(exampleIdentifiers))
             .RuleFor(o => o.City, f => f.PickRandom(exampleCites))
-            .Generate(50);
+            .Generate(recordsCount);
+        
+        await documentClient.ImportDocuments(exampleDocuments, batchSize: recordsCount)
+            .Tap(() => Console.WriteLine("Documents upsert"))
+            .TapError(error => Console.WriteLine($"Error creating document: {error}"));
 
-        foreach (var exampleDocument in exampleDocuments)
-        {
-            await documentClient.UpsertDocument(exampleDocument)
-                .Tap(() => Console.WriteLine("Document upsert"))
-                .TapError(error => Console.WriteLine($"Error creating document: {error}"));
-        }
-
-
+        var randomPick = new Random().Next(0, recordsCount);
+        var randomDocument = exampleDocuments[randomPick];
+        
         var exampleQuery = new ExampleQuery
         {
-            Name = "J"
+            Name = randomDocument.Name?[..5]
         };
 
         var exampleFilters = new ExampleFilters
         {
-            City = "Wroclaw",
-            Identifier = "AB"
+            City = randomDocument.City,
+            Identifier = randomDocument.Identifier
         };
 
         await documentClient.Search<ExampleDocument, ExampleQuery, ExampleFilters>(

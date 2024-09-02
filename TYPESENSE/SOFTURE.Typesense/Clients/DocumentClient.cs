@@ -70,4 +70,35 @@ public class DocumentClient(ITypesenseClient client) : IDocumentClient
 
         return Result.Success();
     }
+    
+    public async Task<Result> DeleteDocument<TDocument>(TDocument document)
+        where TDocument : DocumentBase
+    {
+        try
+        {
+            await client.DeleteDocument<TDocument>(document.Collection, document.Id);
+
+            return Result.Success();
+        }
+        catch (Exception e)
+        {
+            return Result.Failure(e.Message);
+        }
+    }
+    
+    public async Task<Result> ImportDocuments<TDocument>(List<TDocument> documents, int batchSize = 40)
+        where TDocument : DocumentBase
+    {
+        var collection = documents.First().Collection;
+        try
+        {
+            await client.ImportDocuments(collection, documents, batchSize, ImportType.Upsert);
+
+            return Result.Success();
+        }
+        catch (Exception e)
+        {
+            return Result.Failure(e.Message);
+        }
+    }
 }

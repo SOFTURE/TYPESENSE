@@ -16,10 +16,9 @@ public static class ConfigurationExtensions
         where TQuery : QueryBase
         where TFilters : FilterBase
     {
-        var filterValidationResult = ValidateFilterModel<TFilters>(fields);
         var queryValidationResult = ValidateQueryModel<TQuery>(fields);
 
-        Result.Combine(filterValidationResult, queryValidationResult)
+        Result.Combine(queryValidationResult)
             .Bind(() =>
             {
                 return Collection.Create(collectionName)
@@ -31,29 +30,6 @@ public static class ConfigurationExtensions
             })
             .Tap(configurations.Add)
             .TapError(error => Console.WriteLine($"[TYPESENSE][ERROR] {error}"));
-    }
-
-    private static Result ValidateFilterModel<TFilters>(List<Field> fields)
-        where TFilters : FilterBase
-    {
-        var facetFields = fields
-            .Where(f => f.Facet.HasValue && f.Facet.Value)
-            .Select(f => f.Name.ToLower())
-            .ToList();
-
-        var filterProperties = typeof(TFilters)
-            .GetProperties()
-            .Where(x => x.Name != "Collection")
-            .Select(x => x.Name.ToLower())
-            .ToList();
-
-        var invalidFilters = filterProperties
-            .Where(filterProperty => !facetFields.Contains(filterProperty))
-            .ToList();
-
-        return invalidFilters.Count != 0
-            ? Result.Failure($"'{typeof(TFilters).Name}' missing '{string.Join(", ", invalidFilters)}' properties with 'Facet = true'")
-            : Result.Success();
     }
     
     private static Result ValidateQueryModel<TQuery>(List<Field> fields)

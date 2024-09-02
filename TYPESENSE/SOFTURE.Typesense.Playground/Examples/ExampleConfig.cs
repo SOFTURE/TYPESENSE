@@ -9,14 +9,16 @@ public sealed class ExampleConfig : ICollectionConfiguration
 {
     public ExampleConfig()
     {
-        // FACET - Fields with 'true' can be filtered & grouped - for example voivodeship, city, category, brand etc.
-
+        // FACET (default: false) - Fields with 'true' can be filtered & grouped - for example voivodeship, city, category, brand etc.
+        // INDEX (default: true) - Set to 'false' for fields that should not be searchable - for example 'description', 'content' etc.
+        // INFIX (default: false) - Memory consuming, but allows to search for parts of the word - for example 'car' will find 'car', 'cars', 'caravan' etc.
+        
         Configurations.ConfigureCollection<ExampleDocument, ExampleQuery, ExampleFilters>(
             collectionName: "example",
             fields:
             [
                 new Field("name", FieldType.String, facet: false, index: true, optional: false, sort: true),
-                new Field("identifier", FieldType.String, facet: true),
+                new Field("identifier", FieldType.String, facet: false),
                 new Field("city", FieldType.String, facet: true)
             ],
             defaultSortingField: "name"
