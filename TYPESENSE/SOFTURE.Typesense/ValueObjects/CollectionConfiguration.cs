@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
-using SOFTURE.Typesense.Models;
+using SOFTURE.Typesense.Abstractions;
+using SOFTURE.Typesense.Abstractions.Models;
 using Typesense;
 
 namespace SOFTURE.Typesense.ValueObjects;

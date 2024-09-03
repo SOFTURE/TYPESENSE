@@ -1,10 +1,12 @@
-﻿using SOFTURE.Typesense.ValueObjects;
+﻿namespace SOFTURE.Typesense.Abstractions.Models;
 
-namespace SOFTURE.Typesense.Models;
-
-public abstract class QueryBase(Collection collection) : SearchBase(collection)
+public abstract class QueryBase : SearchBase
 {
-    internal string Text()
+    protected QueryBase(Collection collection) : base(collection)
+    {
+    }
+    
+    public string Text()
     {
         var values = new List<string>();
 
@@ -16,13 +18,13 @@ public abstract class QueryBase(Collection collection) : SearchBase(collection)
                 values.Add(value.ToString()!);
             }
         }
-        
-        return values.Count == 0 
-            ? "*" 
+
+        return values.Count == 0
+            ? "*"
             : string.Join(", ", values);
     }
 
-    internal string QueryBy()
+    public string QueryBy()
     {
         var values = new List<string>();
 
@@ -35,8 +37,8 @@ public abstract class QueryBase(Collection collection) : SearchBase(collection)
             }
         }
 
-        return values.Count == 0 
-            ? "" 
+        return values.Count == 0
+            ? ""
             : string.Join(", ", values);
     }
 }

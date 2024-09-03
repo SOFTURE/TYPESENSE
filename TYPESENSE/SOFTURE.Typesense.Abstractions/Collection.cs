@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
 
-namespace SOFTURE.Typesense.ValueObjects;
+namespace SOFTURE.Typesense.Abstractions;
 
 public sealed class Collection : ValueObject
 {

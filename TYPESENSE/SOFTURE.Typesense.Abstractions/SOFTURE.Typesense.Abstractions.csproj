@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+    
     <PropertyGroup>
         <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -7,20 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.4" />
-        <PackageReference Include="SOFTURE.Settings" Version="0.0.9" />
-        <PackageReference Include="Typesense" Version="7.12.0"/>
+        <PackageReference Include="SOFTURE.Results" Version="0.0.9" />
     </ItemGroup>
 
     <PropertyGroup>
-        <AssemblyName>SOFTURE.Typesense</AssemblyName>
+        <AssemblyName>SOFTURE.Typesense.Abstractions</AssemblyName>
         <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
         <Title>$(AssemblyName)</Title>
         <Authors>SOFTURE</Authors>
         <Copyright>Copyright (c) 2024 $(Authors)</Copyright>
-        <Description>SOFTURE - Typesense</Description>
+        <Description>SOFTURE - Typesense Abstractions</Description>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <IncludeSymbols>true</IncludeSymbols>
         <PackageId>$(AssemblyName)</PackageId>
@@ -37,10 +35,6 @@
     <ItemGroup>
         <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
         <None Include="..\..\LICENSE" Pack="true" PackagePath="\"/>
-    </ItemGroup>
-    
-    <ItemGroup>
-        <ProjectReference Include="..\SOFTURE.Typesense.Abstractions\SOFTURE.Typesense.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

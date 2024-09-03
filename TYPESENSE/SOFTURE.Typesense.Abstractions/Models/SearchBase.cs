@@ -1,11 +1,15 @@
 ﻿using System.Reflection;
-using SOFTURE.Typesense.ValueObjects;
 
-namespace SOFTURE.Typesense.Models;
+namespace SOFTURE.Typesense.Abstractions.Models;
 
-public abstract class SearchBase(Collection collection)
+public abstract class SearchBase
 {
-    public Collection Collection => collection;
+    protected SearchBase(Collection collection)
+    {
+        Collection = collection;
+    }
+    
+    public Collection Collection { get; }
     
     internal bool CanSearch()
     {

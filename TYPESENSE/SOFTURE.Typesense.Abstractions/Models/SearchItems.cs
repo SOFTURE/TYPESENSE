@@ -1,4 +1,4 @@
-namespace SOFTURE.Typesense.Models;
+namespace SOFTURE.Typesense.Abstractions.Models;
 
 public sealed class SearchItems<TDocument>
     where TDocument : DocumentBase

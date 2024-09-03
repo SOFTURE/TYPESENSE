@@ -1,4 +1,4 @@
-﻿using SOFTURE.Typesense.Models;
+﻿using SOFTURE.Typesense.Abstractions.Models;
 
 namespace SOFTURE.Typesense.Playground.Examples;
 

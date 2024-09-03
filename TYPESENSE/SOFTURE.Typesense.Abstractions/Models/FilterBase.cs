@@ -1,12 +1,13 @@
-﻿using SOFTURE.Typesense.ValueObjects;
+﻿namespace SOFTURE.Typesense.Abstractions.Models;
 
-namespace SOFTURE.Typesense.Models;
-
-public abstract class FilterBase(Collection collection) : SearchBase(collection)
+public abstract class FilterBase : SearchBase
 {
-    internal string FilterBy()
+    protected FilterBase(Collection collection) : base(collection)
     {
-        
+    }
+    
+    public string FilterBy()
+    {
         var filterBy = new List<string>();
         
         foreach (var property in GetProperties())
