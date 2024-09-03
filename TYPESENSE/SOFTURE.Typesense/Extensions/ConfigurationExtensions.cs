@@ -11,7 +11,7 @@ public static class ConfigurationExtensions
         this List<CollectionConfiguration> configurations,
         string collectionName,
         List<Field> fields,
-        string defaultSortingField)
+        string? defaultSortingField = null)
         where TDocument : DocumentBase
         where TQuery : QueryBase
         where TFilters : FilterBase
