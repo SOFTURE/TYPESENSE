@@ -59,7 +59,7 @@ public sealed class CollectionConfiguration : ValueObject
                                 || existing.Facet.GetValueOrDefault(false) != current.Facet.GetValueOrDefault(false)
                                 || existing.Index.GetValueOrDefault(true) != current.Index.GetValueOrDefault(true)
                                 || existing.Optional.GetValueOrDefault(false) != current.Optional.GetValueOrDefault(false)
-                                || existing.Sort.GetValueOrDefault(false) != current.Sort.GetValueOrDefault(false)
+                                || CompareSort(existing, current)
                                 || existing.Infix.GetValueOrDefault(false) != current.Infix.GetValueOrDefault(false)
                                 || (existing.Locale ?? "") != (current.Locale ?? "")
                 )
@@ -67,6 +67,20 @@ public sealed class CollectionConfiguration : ValueObject
             .ToList();
 
         return changedFields.Count != 0;
+    }
+
+    private static bool CompareSort(Field existingField, Field currentField)
+    {
+        var defaultValue = currentField.Type switch
+        {
+            FieldType.String => false,
+            FieldType.Bool => true,
+            FieldType.Int32 => true,
+            FieldType.Int64 => true,
+            _ => false
+        };
+
+        return existingField.Sort.GetValueOrDefault(defaultValue) != currentField.Sort.GetValueOrDefault(defaultValue);
     }
 
     protected override IEnumerable<IComparable> GetEqualityComponents()
