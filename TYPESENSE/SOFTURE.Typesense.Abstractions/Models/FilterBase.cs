@@ -1,4 +1,7 @@
-﻿namespace SOFTURE.Typesense.Abstractions.Models;
+﻿using System.Reflection;
+using System.Text.Json.Serialization;
+
+namespace SOFTURE.Typesense.Abstractions.Models;
 
 public abstract class FilterBase : SearchBase
 {
@@ -13,11 +16,11 @@ public abstract class FilterBase : SearchBase
         foreach (var property in GetProperties())
         {
             var value = property.GetValue(this);
-            var name = property.Name.ToLower();
+            var name = property.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name;
 
             if (value != null && !string.IsNullOrEmpty(value.ToString()))
             {
-                filterBy.Add($"{name}: {value}");
+                filterBy.Add($"{name}: {value.ToString()!.ToLower()}");
             }
         }
         

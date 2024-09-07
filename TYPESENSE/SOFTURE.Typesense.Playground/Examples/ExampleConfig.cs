@@ -19,7 +19,9 @@ public sealed class ExampleConfig : ICollectionConfiguration
             [
                 new Field("name", FieldType.String, facet: false, index: true, optional: false, sort: true),
                 new Field("identifier", FieldType.String, facet: false),
-                new Field("city", FieldType.String, facet: true)
+                new Field("city", FieldType.String, facet: true),
+                new Field("is_active", FieldType.Bool, facet: true),
+                new Field("voivodeship_id", FieldType.Int32, facet: true)
             ],
             defaultSortingField: "name"
         );

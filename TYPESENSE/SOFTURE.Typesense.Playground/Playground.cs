@@ -13,6 +13,7 @@ public sealed class Playground(IDocumentClient documentClient)
         
         var exampleCites = new[] { "Warsaw", "Wroclaw" };
         var exampleIdentifiers = new[] { "AB", "CD" };
+        var voivodeshipIds = new[] { 1, 2, 3, 4, 5 };
 
         var currentId = 1;
         var exampleDocuments = new Faker<ExampleDocument>()
@@ -21,6 +22,8 @@ public sealed class Playground(IDocumentClient documentClient)
             .RuleFor(o => o.Name, f => f.Name.FullName())
             .RuleFor(o => o.Identifier, f => f.PickRandom(exampleIdentifiers))
             .RuleFor(o => o.City, f => f.PickRandom(exampleCites))
+            .RuleFor(o => o.IsActive, f => f.Random.Bool())
+            .RuleFor(o => o.VoivodeshipId, f => f.PickRandom(voivodeshipIds))
             .Generate(recordsCount);
         
         await documentClient.ImportDocuments(exampleDocuments, batchSize: recordsCount)
@@ -38,7 +41,9 @@ public sealed class Playground(IDocumentClient documentClient)
         var exampleFilters = new ExampleFilters
         {
             City = randomDocument.City,
-            Identifier = randomDocument.Identifier
+            Identifier = randomDocument.Identifier,
+            IsActive = randomDocument.IsActive,
+            VoivodeshipId = randomDocument.VoivodeshipId
         };
 
         await documentClient.Search<ExampleDocument, ExampleQuery, ExampleFilters>(

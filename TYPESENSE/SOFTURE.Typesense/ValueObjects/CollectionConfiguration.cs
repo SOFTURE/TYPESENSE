@@ -27,10 +27,6 @@ public sealed class CollectionConfiguration : ValueObject
         string? defaultSortingField)
         where TDocument : DocumentBase
     {
-        var validationResult = ValidateDocumentStructure<TDocument>(fields);
-        if (validationResult.IsFailure)
-            return Result.Failure<CollectionConfiguration>(validationResult.Error);
-
         if (string.IsNullOrEmpty(defaultSortingField))
             return new CollectionConfiguration(collection, fields);
 
@@ -71,23 +67,6 @@ public sealed class CollectionConfiguration : ValueObject
             .ToList();
 
         return changedFields.Count != 0;
-    }
-
-    private static Result ValidateDocumentStructure<TDocument>(IReadOnlyList<Field> fields)
-        where TDocument : DocumentBase
-    {
-        var documentProperties = typeof(TDocument)
-            .GetProperties()
-            .Where(p => p.Name != "Collection" && p.Name != "Id")
-            .Select(x => x.Name.ToLower());
-
-        var fieldNames = fields.Select(f => f.Name.ToLower());
-
-        var missingProperties = fieldNames.Except(documentProperties).ToList();
-
-        return missingProperties.Count != 0
-            ? Result.Failure($"Missing properties: '{string.Join(",", missingProperties)}' in document model: '{typeof(TDocument).Name}'.")
-            : Result.Success();
     }
 
     protected override IEnumerable<IComparable> GetEqualityComponents()
