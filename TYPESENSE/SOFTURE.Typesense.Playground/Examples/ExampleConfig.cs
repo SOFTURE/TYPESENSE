@@ -1,5 +1,5 @@
-using SOFTURE.Typesense.Abstractions;
 using SOFTURE.Typesense.Extensions;
+using SOFTURE.Typesense.Interfaces;
 using SOFTURE.Typesense.ValueObjects;
 using Typesense;
 

@@ -4,6 +4,7 @@ using SOFTURE.Settings.Extensions;
 using SOFTURE.Typesense.Abstractions;
 using SOFTURE.Typesense.Clients;
 using SOFTURE.Typesense.HealthChecks;
+using SOFTURE.Typesense.Interfaces;
 using SOFTURE.Typesense.Settings;
 using Typesense.Setup;
 

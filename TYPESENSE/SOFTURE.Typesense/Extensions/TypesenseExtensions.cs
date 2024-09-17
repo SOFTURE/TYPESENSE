@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using SOFTURE.Typesense.Abstractions;
+using SOFTURE.Typesense.Interfaces;
 
 namespace SOFTURE.Typesense.Extensions;
 

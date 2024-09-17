@@ -1,7 +1,8 @@
 using CSharpFunctionalExtensions;
+using SOFTURE.Typesense.Abstractions;
 using SOFTURE.Typesense.ValueObjects;
 
-namespace SOFTURE.Typesense.Abstractions;
+namespace SOFTURE.Typesense.Interfaces;
 
 public interface ICollectionClient
 {
