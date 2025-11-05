@@ -5,15 +5,17 @@ namespace SOFTURE.Typesense.Abstractions;
 
 public interface IDocumentClient
 {
-    Task<Result<SearchItems<TDocument>>> Search<TDocument, TQuery, TFilters>(
+    Task<Result<SearchItems<TDocument>>> Search<TDocument, TQuery, TFilters, TSortBy>(
         TQuery query,
         int page = 1,
         TFilters? filters = null,
         bool typoTolerance = true,
-        int records = 10)
+        int records = 10,
+        TSortBy? sortBy = null)
         where TDocument : DocumentBase
         where TQuery : QueryBase
-        where TFilters : FilterBase;
+        where TFilters : FilterBase
+        where TSortBy : SortBase;
 
     Task<Result> CreateDocument<TDocument>(TDocument document)
         where TDocument : DocumentBase;

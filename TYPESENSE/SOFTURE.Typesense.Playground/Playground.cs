@@ -1,6 +1,7 @@
 using Bogus;
 using CSharpFunctionalExtensions;
 using SOFTURE.Typesense.Abstractions;
+using SOFTURE.Typesense.Abstractions.Models;
 using SOFTURE.Typesense.Playground.Examples;
 
 namespace SOFTURE.Typesense.Playground;
@@ -46,9 +47,14 @@ public sealed class Playground(IDocumentClient documentClient)
             VoivodeshipId = randomDocument.VoivodeshipId
         };
 
-        await documentClient.Search<ExampleDocument, ExampleQuery, ExampleFilters>(
+        var exampleSort = new ExampleSort()
+            .WithName(SortDirection.Desc)
+            .WithCity(SortDirection.Asc);
+
+        await documentClient.Search<ExampleDocument, ExampleQuery, ExampleFilters, ExampleSort>(
                 query: exampleQuery,
-                filters: exampleFilters
+                filters: exampleFilters,
+                sortBy: exampleSort
             )
             .Tap(result =>
             {

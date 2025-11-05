@@ -53,18 +53,20 @@ public sealed class CollectionConfiguration : ValueObject
     {
         if (existingFields == null || existingFields.Count != Fields.Count) return true;
 
-        var changedFields = Fields.Where(current => existingFields.All(
-                    existing => existing.Name != current.Name
-                                || existing.Type != current.Type
-                                || existing.Facet.GetValueOrDefault(false) != current.Facet.GetValueOrDefault(false)
-                                || existing.Index.GetValueOrDefault(true) != current.Index.GetValueOrDefault(true)
-                                || existing.Optional.GetValueOrDefault(false) != current.Optional.GetValueOrDefault(false)
-                                || CompareSort(existing, current)
-                                || existing.Infix.GetValueOrDefault(false) != current.Infix.GetValueOrDefault(false)
-                                || (existing.Locale ?? "") != (current.Locale ?? "")
-                )
-            )
-            .ToList();
+        var changedFields = Fields.Where(current =>
+        {
+            var existing = existingFields.SingleOrDefault(e => e.Name == current.Name);
+
+            if (existing == null) return true;
+
+            return existing.Type != current.Type
+                   || existing.Facet.GetValueOrDefault(false) != current.Facet.GetValueOrDefault(false)
+                   || existing.Index.GetValueOrDefault(true) != current.Index.GetValueOrDefault(true)
+                   || existing.Optional.GetValueOrDefault(false) != current.Optional.GetValueOrDefault(false)
+                   || CompareSort(existing, current)
+                   || existing.Infix.GetValueOrDefault(false) != current.Infix.GetValueOrDefault(false)
+                   || (existing.Locale ?? "") != (current.Locale ?? "");
+        }).ToList();
 
         return changedFields.Count != 0;
     }
