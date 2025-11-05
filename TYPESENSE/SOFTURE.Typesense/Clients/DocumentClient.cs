@@ -26,7 +26,7 @@ public class DocumentClient(ITypesenseClient client) : IDocumentClient
             Page = page,
             PerPage = records,
             FilterBy = filterBy,
-            NumberOfTypos = typoTolerance ? 2 : 0
+            NumberOfTypos = typoTolerance ? "2" : "0"
         };
 
         try

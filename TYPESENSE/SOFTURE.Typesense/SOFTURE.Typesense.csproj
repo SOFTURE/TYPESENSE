@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.4" />
-        <PackageReference Include="SOFTURE.Settings" Version="0.0.9" />
-        <PackageReference Include="Typesense" Version="7.12.0"/>
+        <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.1.3" />
+        <PackageReference Include="SOFTURE.Settings" Version="0.1.1" />
+        <PackageReference Include="Typesense" Version="7.36.0" />
     </ItemGroup>
 
     <PropertyGroup>
