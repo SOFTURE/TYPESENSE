@@ -39,6 +39,8 @@ public sealed class Playground(IDocumentClient documentClient)
             Name = randomDocument.Name?[..5]
         };
 
+        Console.WriteLine($"QueryBy: '{exampleQuery.QueryBy()}'");
+        
         var exampleFilters = new ExampleFilters
         {
             City = randomDocument.City,

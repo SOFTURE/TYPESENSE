@@ -16,7 +16,7 @@ public abstract class FilterBase : SearchBase
         foreach (var property in GetProperties())
         {
             var value = property.GetValue(this);
-            var name = property.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name;
+            var name = property.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name ?? property.Name.ToLower();
 
             if (value != null && !string.IsNullOrEmpty(value.ToString()))
             {
