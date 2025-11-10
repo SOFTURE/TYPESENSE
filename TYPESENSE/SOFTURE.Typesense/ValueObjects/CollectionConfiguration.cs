@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using SOFTURE.Typesense.Abstractions;
 using SOFTURE.Typesense.Abstractions.Models;
+using SOFTURE.Typesense.Utilities;
 using Typesense;
 
 namespace SOFTURE.Typesense.ValueObjects;
@@ -21,12 +22,23 @@ public sealed class CollectionConfiguration : ValueObject
     private IReadOnlyList<Field> Fields { get; }
     private Field? DefaultSortingField { get; }
 
+    internal IReadOnlyList<Field> GetFields() => Fields;
+
     public static Result<CollectionConfiguration> Create<TDocument>(
         Collection collection,
         IReadOnlyList<Field> fields,
         string? defaultSortingField)
         where TDocument : DocumentBase
     {
+        try
+        {
+            SchemaValidator.ValidateDocumentSchema<TDocument>(fields);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Result.Failure<CollectionConfiguration>(ex.Message);
+        }
+
         if (string.IsNullOrEmpty(defaultSortingField))
             return new CollectionConfiguration(collection, fields);
 

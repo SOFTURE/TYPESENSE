@@ -17,13 +17,16 @@ public static class ConfigurationExtensions
         where TQuery : QueryBase
         where TFilters : FilterBase
     {
-        Collection.Create(collectionName)
+        var result = Collection.Create(collectionName)
             .Bind(collection => CollectionConfiguration.Create<TDocument>(
                 collection: collection,
                 fields: fields,
                 defaultSortingField: defaultSortingField
-            ))
-            .Tap(configurations.Add)
-            .TapError(error => Console.WriteLine($"[TYPESENSE][ERROR] {error}"));
+            ));
+
+        if (result.IsFailure)
+            throw new InvalidOperationException($"[TYPESENSE] Failed to configure collection '{collectionName}': {result.Error}");
+
+        configurations.Add(result.Value);
     }
 }
