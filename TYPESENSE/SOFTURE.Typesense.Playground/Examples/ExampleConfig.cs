@@ -21,7 +21,15 @@ public sealed class ExampleConfig : ICollectionConfiguration
                 new Field("identifier", FieldType.String, facet: false, optional: false, index: true, sort: true),
                 new Field("city", FieldType.String, facet: true, optional: false, index: true, sort: true),
                 new Field("is_active", FieldType.Bool, facet: true),
-                new Field("voivodeship_id", FieldType.Int32, facet: true)
+                new Field("voivodeship_id", FieldType.Int32, facet: true),
+                new Field("status", FieldType.String, facet: true, optional: false, index: true),
+                new Field("price", FieldType.Float, facet: false, optional: false, index: true),
+                new Field("quantity", FieldType.Int32, facet: false, optional: false, index: true),
+                new Field("max_value", FieldType.Float, facet: false, optional: false, index: true),
+                new Field("min_value", FieldType.Float, facet: false, optional: false, index: true),
+                new Field("timestamp", FieldType.Int64, facet: false, optional: false, index: true),
+                new Field("tags", FieldType.StringArray, facet: true, optional: true),
+                new Field("excluded_ids", FieldType.StringArray, facet: false, optional: true)
             ],
             defaultSortingField: "name"
         );
