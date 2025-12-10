@@ -33,7 +33,7 @@ public abstract class FilterBase : SearchBase
                     ? property.PropertyType
                     : Nullable.GetUnderlyingType(property.PropertyType);
 
-                var arrayOperator = operatorAttr?.Operator;
+                var arrayOperator = operatorAttr?.Operator ?? FilterOperator.Equals;
                 var formattedArrayValue = FormatArrayValue(value, arrayType!, arrayOperator);
                 if (!string.IsNullOrEmpty(formattedArrayValue))
                 {
@@ -123,7 +123,13 @@ public abstract class FilterBase : SearchBase
             return string.Empty;
 
         var formattedValues = string.Join(",", values);
-        var isNegation = @operator == FilterOperator.NotEquals;
-        return isNegation ? $"!=[{formattedValues}]" : $"=[{formattedValues}]";
+
+        return @operator switch
+        {
+            FilterOperator.In => $"[{formattedValues}]",
+            FilterOperator.NotIn => $"![{formattedValues}]",
+            FilterOperator.NotEquals => $"!=[{formattedValues}]",
+            _ => $"=[{formattedValues}]"
+        };
     }
 }

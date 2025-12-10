@@ -9,12 +9,15 @@ public static class FilterOperatorExtensions
         return @operator switch
         {
             FilterOperator.Equals => ":",
+            FilterOperator.ExactEquals => "=",
             FilterOperator.NotEquals => "!=",
             FilterOperator.LessThan => "<",
             FilterOperator.GreaterThan => ">",
             FilterOperator.LessThanOrEquals => "<=",
             FilterOperator.GreaterThanOrEquals => ">=",
             FilterOperator.Range => "[..]",
+            FilterOperator.In => "[]",
+            FilterOperator.NotIn => "![]",
             _ => ":"
         };
     }

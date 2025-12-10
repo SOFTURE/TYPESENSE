@@ -49,4 +49,16 @@ public sealed class ExampleFilters() : FilterBase(collection: "example")
     [FilterOperator(FilterOperator.NotEquals)]
     [JsonPropertyName("excluded_ids")]
     public string[]? ExcludedIds { get; set; }
+
+    [FilterOperator(FilterOperator.ExactEquals)]
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
+
+    [FilterOperator(FilterOperator.In)]
+    [JsonPropertyName("categories")]
+    public string[]? Categories { get; set; }
+
+    [FilterOperator(FilterOperator.NotIn)]
+    [JsonPropertyName("excluded_categories")]
+    public string[]? ExcludedCategories { get; set; }
 }

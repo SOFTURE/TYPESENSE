@@ -62,7 +62,8 @@ public sealed class Playground(IDocumentClient documentClient)
             //MinValue = 50,
             //Timestamp = (timestampFrom, timestampTo),
             Tags = ["electronics", "books"],
-            ExcludedIds = ["1", "2", "3"]
+            ExcludedIds = ["1", "2", "3"],
+            //Name = "John Doe"
         };
         
         var exampleSort = new ExampleSort()
