@@ -91,6 +91,7 @@ public sealed class CollectionConfiguration : ValueObject
             FieldType.Bool => true,
             FieldType.Int32 => true,
             FieldType.Int64 => true,
+            FieldType.Float => true,
             _ => false
         };
 
@@ -99,6 +100,6 @@ public sealed class CollectionConfiguration : ValueObject
 
     protected override IEnumerable<IComparable> GetEqualityComponents()
     {
-        yield return Collection;
+        yield return Collection.Name;
     }
 }

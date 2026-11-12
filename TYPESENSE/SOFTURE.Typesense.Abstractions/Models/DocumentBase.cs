@@ -9,7 +9,7 @@ public abstract class DocumentBase
    
     public Collection Collection { get; }
 
-#if NET8_0
+#if NET8_0_OR_GREATER
     public abstract required string Id { get; set; }
 #endif
 

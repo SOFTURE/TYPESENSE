@@ -164,6 +164,59 @@ var result = await documentClient.Search<ProductDocument, ProductQuery, ProductF
 - `sort` (default: false) - Set to `true` for fields that can be sorted
 - `optional` (default: false) - Whether the field is optional
 
+## Supported Frameworks
+
+| Target | Typesense client | CSharpFunctionalExtensions |
+|--------|------------------|----------------------------|
+| `net6.0`, `net8.0` | 7.36.0 | 2.42.5 |
+| `net10.0` | 9.2.0 | 3.7.0 |
+
+On `net8.0` and `net10.0` the document `Id` is a `required` member: declare it as
+`public override required string Id { get; set; }`, and mark a constructor that sets it with
+`[SetsRequiredMembers]`.
+
+The integration tests run against Typesense servers 0.25.1, 28.0 and 30.2. `FilterOperator.NotIn` needs a
+server 28.0 or newer; older servers return no hits for it.
+
+## Testing
+
+```bash
+cd TYPESENSE
+dotnet test
+```
+
+The integration tests are skipped unless a Typesense server is configured:
+
+```bash
+docker run -d -p 8108:8108 -e TYPESENSE_DATA_DIR=/tmp -e TYPESENSE_API_KEY=xyz typesense/typesense:28.0
+TYPESENSE_TEST_HOST=localhost TYPESENSE_TEST_PORT=8108 TYPESENSE_TEST_API_KEY=xyz dotnet test
+```
+
+## Releasing
+
+The single workflow [`release.yml`](.github/workflows/release.yml) releases one package per run to nuget.org
+and creates a GitHub Release with the `.nupkg` attached.
+
+| Short name | Package |
+|------------|---------|
+| `typesense` | `SOFTURE.Typesense` |
+| `typesense-abstractions` | `SOFTURE.Typesense.Abstractions` |
+
+A release starts from a tag `<package>@<version>` (e.g. `typesense@0.2.0`) created by hand; the workflow never
+creates tags. In GitHub: Releases → **Draft a new release** → **Choose a tag** → type `typesense@0.2.0` →
+**Create new tag on publish**, target `master` → **Publish release**. Pushing the tag from a terminal works the
+same way. `SOFTURE.Typesense` depends on `SOFTURE.Typesense.Abstractions` of the same version, so release both
+with one version.
+
+Before publishing, the workflow checks that the commit is on `master`, builds for `net6.0`, `net8.0` and
+`net10.0`, runs the unit tests, runs the integration tests against Typesense 0.25.1, 28.0 and 30.2, blocks on
+known vulnerabilities on `net10.0` (older targets only warn) and checks the package contents. **Run workflow**
+on a branch is a dry run.
+
+Publishing goes through [nuget.org trusted publishing](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing):
+the policy (Package Owner `SOFTURE`, Repository `SOFTURE/TYPESENSE`, Workflow File `release.yml`) and the
+organization secret `NUGET_USER` (the nuget.org profile name of the policy owner). Keep the workflow file name.
+
 ## License
 
 See [LICENSE](LICENSE) file for details.
