@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'net10.0' ">
-        <PackageReference Include="SOFTURE.Results" Version="0.5.0" />
+        <PackageReference Include="SOFTURE.Results" Version="2.0.0" />
     </ItemGroup>
 
     <ItemGroup>
